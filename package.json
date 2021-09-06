@@ -1,10 +1,10 @@
 {
   "name": "e-commerce",
-  "version": "1.0.0",
-  "description": "",
+  "version": "0.0.1",
+  "description": "A simple ecommerce website",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon src/index.js --exec babel-node"
+    "dev": "nodemon src/index.js --exec babel-node --ignore client"
   },
   "keywords": [],
   "author": "Tomás Salina",
