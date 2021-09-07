@@ -13,13 +13,13 @@ const ProductSchema = new Schema(
       required: true,
       default: 0,
     },
-    desciption: {
-      type: String,
-      trim: true,
-    },
     quantitiy: {
       type: Number,
       default: 0,
+    },
+    desciption: {
+      type: String,
+      trim: true,
     },
     images: {
       url: String,

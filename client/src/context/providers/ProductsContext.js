@@ -1,9 +1,14 @@
-import { createContext, useEffect, useReducer } from "react";
-import { getProducts } from "../../api/productsApi";
+import { createContext, useEffect, useReducer, useContext } from "react";
+import { getProducts, saveProduct } from "../../api/productsApi";
 import { intialState, productsReducer } from "../reducer/productsReducer";
 import { productsActions } from "../actions/productsActions";
 
 export const ProductContext = createContext(intialState);
+
+export const useProducts = () => {
+  const context = useContext(ProductContext);
+  return context;
+};
 
 export const ProductProvider = ({ children }) => {
   const [state, dispatch] = useReducer(productsReducer, intialState);
@@ -11,12 +16,41 @@ export const ProductProvider = ({ children }) => {
   const loadProducts = async () => {
     dispatch({ type: productsActions.LOAD_PRODUCTS });
 
-    const res = await getProducts();
+    try {
+      const res = await getProducts();
 
-    if (res.data) {
+      if (res.data) {
+        dispatch({
+          type: productsActions.LOAD_PRODUCTS_SUCCESS,
+          payload: res.data,
+        });
+      }
+    } catch (err) {
+      console.log(err);
       dispatch({
-        type: productsActions.LOAD_PRODUCTS_SUCCESS,
-        payload: res.data,
+        type: productsActions.LOAD_PRODUCTS_ERROR,
+        payload: err.message,
+      });
+    }
+  };
+
+  const addNewProduct = async (newProduct) => {
+    dispatch({ type: productsActions.LOAD_SAVE_PRODUCTS });
+
+    try {
+      const res = await saveProduct(newProduct);
+
+      if (res.data) {
+        dispatch({
+          type: productsActions.LOAD_SAVE_PRODUCTS_SUCCESS,
+          payload: res.data,
+        });
+      }
+    } catch (err) {
+      console.log(err);
+      dispatch({
+        type: productsActions.LOAD_SAVE_PRODUCTS_ERROR,
+        payload: err.message,
       });
     }
   };
@@ -26,7 +60,7 @@ export const ProductProvider = ({ children }) => {
   }, []);
 
   return (
-    <ProductContext.Provider value={{ ...state, getProducts }}>
+    <ProductContext.Provider value={{ ...state, loadProducts, addNewProduct }}>
       {children}
     </ProductContext.Provider>
   );

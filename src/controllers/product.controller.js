@@ -6,7 +6,6 @@ export const getProducts = async (req, res) => {
 };
 
 export const getProduct = (req, res) => {
-  console.log("oda");
   res.json("get product");
 };
 

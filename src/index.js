@@ -1,6 +1,7 @@
 import express from "express";
-import "./config/mongoose";
 import cors from "cors";
+
+import "./config/mongoose";
 import { PORT } from "./config";
 
 import productRoutes from "./routes/products.routes";

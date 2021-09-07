@@ -7,18 +7,43 @@ export const intialState = {
 };
 
 export const productsReducer = (state, actions) => {
-  switch (actions.type) {
+  const { type, payload } = actions;
+
+  switch (type) {
     case productsActions.LOAD_PRODUCTS:
       return {
         ...state,
         isLoading: true,
       };
-
     case productsActions.LOAD_PRODUCTS_SUCCESS:
       return {
         ...state,
         isLoading: false,
-        products: actions.payload,
+        products: payload,
+      };
+    case productsActions.LOAD_PRODUCTS_ERROR:
+      return {
+        ...state,
+        isLoading: false,
+        errorMessage: payload,
+      };
+
+    case productsActions.LOAD_SAVE_PRODUCTS:
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case productsActions.LOAD_SAVE_PRODUCTS_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        products: [...state.products, payload],
+      };
+    case productsActions.LOAD_PRODUCTS_ERROR:
+      return {
+        ...state,
+        isLoading: false,
+        errorMessage: payload,
       };
 
     default:
