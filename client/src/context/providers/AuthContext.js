@@ -18,7 +18,6 @@ export const AuthProvider = ({ children }) => {
     try {
       const res = await register({ email, password });
       const { token } = res.data;
-      console.log(res)
 
       const resUser = await profile(token);
 
