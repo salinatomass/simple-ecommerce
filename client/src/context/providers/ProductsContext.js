@@ -45,11 +45,18 @@ export const ProductProvider = ({ children }) => {
           payload: res.data,
         });
       }
+
+      return res.data;
     } catch (err) {
-      dispatch({
-        type: productsActions.LOAD_SAVE_PRODUCTS_ERROR,
-        payload: err.message,
-      });
+      const errorData = err.response.data;
+      if (errorData) {
+        dispatch({
+          type: productsActions.LOAD_SAVE_PRODUCTS_ERROR,
+          payload: errorData.message,
+        });
+      }
+
+      throw errorData.message;
     }
   };
 

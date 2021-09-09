@@ -11,7 +11,7 @@ export const login = async (req, res, next) => {
 
     const userFound = await User.findOne({ email });
     if (!userFound)
-      return next(createError.Unauthorized("The user does not exists"));
+      return next(createError.Conflict("The user does not exists"));
 
     const isMatch = await userFound.validPassword(password);
     if (!isMatch) return next(createError.Unauthorized("Invalid password"));
@@ -31,7 +31,7 @@ export const register = async (req, res, next) => {
     const { email, password } = reqValidation;
 
     const userFound = await User.findOne({ email });
-    if (userFound) return next(createError.Unauthorized("User already exists"));
+    if (userFound) return next(createError.Conflict("User already exists"));
 
     const user = new User({ email, password });
     user.password = await user.generateHash(user.password);

@@ -4,13 +4,13 @@ import { Link } from "react-router-dom";
 
 import Spinner from "../../components/ui/Spinner";
 
-const Signup = ({ history }) => {
+const Signin = ({ history }) => {
   const [user, setUser] = useState({
     email: "",
     password: "",
   });
 
-  const { isLoading, signup, errorMessage } = useAuth();
+  const { isLoading, signin, errorMessage } = useAuth();
 
   const handleChange = (e) =>
     setUser({ ...user, [e.target.name]: e.target.value });
@@ -18,8 +18,8 @@ const Signup = ({ history }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const userResponse = await signup(user);
-      if (userResponse) history.push("/auth/signin");
+      const userResponse = await signin(user);
+      if (userResponse) history.push("/");
     } catch (err) {
       console.error(err);
     }
@@ -29,7 +29,7 @@ const Signup = ({ history }) => {
     <div className="row h-100">
       <div className="col-md-4 offset-md-4 p-2 my-auto">
         <div className="card card-body">
-          <h1>Signup</h1>
+          <h1>Login</h1>
           <form onSubmit={handleSubmit}>
             <div className="mb-3">
               <label htmlFor="email">Email:</label>
@@ -58,23 +58,21 @@ const Signup = ({ history }) => {
               className="btn btn-primary rounded-0"
               disabled={!user.email || !user.password || isLoading}
             >
-              {isLoading ? <Spinner /> : "Signup"}
+              {isLoading ? <Spinner /> : "Login"}
             </button>
-
-            <p className="mt-4">
-              Do you have an Account? <Link to="/auth/signin">Login</Link>
-            </p>
-
-            {errorMessage && (
-              <div className="alert alert-danger mt-3" role="alert">
-                {errorMessage}
-              </div>
-            )}
           </form>
+          <p className="mt-4">
+            Don't have an Account? <Link to="/auth/signup">Register</Link>
+          </p>
+          {errorMessage && (
+            <div className="alert alert-danger mt-3" role="alert">
+              {errorMessage}
+            </div>
+          )}
         </div>
       </div>
     </div>
   );
 };
 
-export default Signup;
+export default Signin;

@@ -1,11 +1,11 @@
 import { useState } from "react";
-// import { getProducts } from "../../api/productsApi";
 import { useProducts } from "../../context/providers/ProductsContext";
 
 import Spinner from "../../components/ui/Spinner";
+import toast from "react-hot-toast";
 
-const ProductForm = () => {
-  const { addNewProduct, isLoading } = useProducts();
+const ProductFormPage = ({ history }) => {
+  const { addNewProduct, isLoading, errorMessage } = useProducts();
 
   const [product, setProduct] = useState({
     name: "",
@@ -19,7 +19,19 @@ const ProductForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await addNewProduct(product);
+
+    try {
+      const productCreated = await addNewProduct(product);
+
+      if (!productCreated) throw new Error(errorMessage);
+
+      toast.success("🚀 New product added", { position: "bottom-right" });
+      history.push("/");
+    } catch (err) {
+      errorMessage
+        ? toast.error(errorMessage, { position: "bottom-right" })
+        : toast.error(err, { position: "bottom-right" });
+    }
   };
 
   return (
@@ -85,4 +97,4 @@ const ProductForm = () => {
   );
 };
 
-export default ProductForm;
+export default ProductFormPage;

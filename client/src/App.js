@@ -3,12 +3,16 @@ import "./App.css";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { ProductProvider } from "./context/providers/ProductsContext";
 import { AuthProvider } from "./context/providers/AuthContext";
+import { Toaster } from "react-hot-toast";
 
 // Components
 import NavBar from "./components/ui/NavBar";
+
+// Pages
 import HomePage from "./pages/home/HomePage.jsx";
-import ProductForm from "./pages/products/ProductForm";
+import ProductFormPage from "./pages/products/ProductFormPage";
 import Signup from "./pages/auth/Signup";
+import Signin from "./pages/auth/Signin";
 
 function App() {
   return (
@@ -19,11 +23,13 @@ function App() {
           <Switch>
             <ProductProvider>
               <Route path="/" exact component={HomePage} />
-              <Route path="/auth/Signup" component={Signup} />
-              <Route path="/products/new" component={ProductForm} />
+              <Route path="/auth/signup" component={Signup} />
+              <Route path="/auth/signin" component={Signin} />
+              <Route path="/products/new" component={ProductFormPage} />
             </ProductProvider>
           </Switch>
         </div>
+        <Toaster />
       </AuthProvider>
     </Router>
   );
