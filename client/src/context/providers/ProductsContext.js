@@ -26,7 +26,6 @@ export const ProductProvider = ({ children }) => {
         });
       }
     } catch (err) {
-      console.log(err);
       dispatch({
         type: productsActions.LOAD_PRODUCTS_ERROR,
         payload: err.message,
@@ -47,7 +46,6 @@ export const ProductProvider = ({ children }) => {
         });
       }
     } catch (err) {
-      console.log(err);
       dispatch({
         type: productsActions.LOAD_SAVE_PRODUCTS_ERROR,
         payload: err.message,

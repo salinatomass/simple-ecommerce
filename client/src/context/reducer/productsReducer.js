@@ -39,7 +39,7 @@ export const productsReducer = (state, actions) => {
         isLoading: false,
         products: [...state.products, payload],
       };
-    case productsActions.LOAD_PRODUCTS_ERROR:
+    case productsActions.LOAD_SAVE_PRODUCTS_ERROR:
       return {
         ...state,
         isLoading: false,

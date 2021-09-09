@@ -1,6 +1,8 @@
 import { useState } from "react";
-import { getProducts } from "../../api/productsApi";
+// import { getProducts } from "../../api/productsApi";
 import { useProducts } from "../../context/providers/ProductsContext";
+
+import Spinner from "../../components/ui/Spinner";
 
 const ProductForm = () => {
   const { addNewProduct, isLoading } = useProducts();
@@ -32,15 +34,7 @@ const ProductForm = () => {
                 className="btn btn-primary"
                 disabled={!product.name || isLoading}
               >
-                {isLoading ? (
-                  <span
-                    className="spinner-border spinner-border-sm"
-                    role="status"
-                    aria-hidden="true"
-                  ></span>
-                ) : (
-                  "Save"
-                )}
+                {isLoading ? <Spinner /> : "Save"}
               </button>
             </div>
             <div className="col-md-7">
