@@ -1,8 +1,12 @@
 const ProductCard = ({ product }) => {
-  const { name, price, description } = product;
+  const { name, price, description, images } = product;
   return (
     <div className="card rounded-0">
-      <img src="/assets/no-product.png" alt="" className="w-75 m-auto" />
+      <img
+        src={images && images.url ? images.url : "/assets/no-product.png"}
+        alt=""
+        className="w-75 m-auto"
+      />
       <div className="card-body">
         <h2 className="h3">{name}</h2>
         <p>{description}</p>

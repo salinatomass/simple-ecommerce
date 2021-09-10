@@ -1,5 +1,6 @@
 import Product from "../models/Product";
 import createError from "http-errors";
+import { uploadImage } from "../helpers/cloudinary";
 
 export const getProducts = async (req, res) => {
   const product = await Product.find();
@@ -18,18 +19,23 @@ export const createProduct = async (req, res, next) => {
     if (nameProductFound)
       return next(createError.Conflict("Product already exits"));
 
+    const resultImage = await uploadImage(req.files.image.tempFilePath);
     const newProduct = new Product({
       name,
       price,
       description,
       quantity,
+      images: {
+        url: resultImage.secure_url || "",
+      },
     });
 
     await newProduct.save();
 
     res.json(newProduct);
   } catch (err) {
-    console.error(err.message);
+    console.error(err._message);
+    next(createError.BadRequest(err._message));
   }
 };
 

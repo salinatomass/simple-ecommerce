@@ -14,6 +14,8 @@ const ProductFormPage = ({ history }) => {
     description: "",
   });
 
+  const [selectedImage, setSelectedImage] = useState(null);
+
   const handleChange = (e) =>
     setProduct({ ...product, [e.target.name]: e.target.value });
 
@@ -21,9 +23,17 @@ const ProductFormPage = ({ history }) => {
     e.preventDefault();
 
     try {
-      const productCreated = await addNewProduct(product);
+      const formData = new FormData();
+      formData.append("name", product.name);
+      formData.append("price", product.price);
+      formData.append("quantity", product.quantity);
+      formData.append("description", product.description);
+      formData.append("image", selectedImage);
 
-      if (!productCreated) throw new Error(errorMessage);
+      const productCreated = await addNewProduct(formData);
+
+      console.log("product created: ", productCreated);
+      if (!productCreated) throw new Error(errorMessage || "Upps! try again");
 
       toast.success("🚀 New product added", { position: "bottom-right" });
       history.push("/");
@@ -86,9 +96,25 @@ const ProductFormPage = ({ history }) => {
                 className="form-control"
                 onChange={handleChange}
               ></textarea>
+              <label htmlFor="image"></label>
+              <input
+                type="file"
+                name="image"
+                id="image"
+                className="form-control"
+                onChange={(e) => setSelectedImage(e.target.files[0])}
+              />
             </div>
             <div className="col-md-5 my-auto">
-              <img src="/assets/no-image.png" alt="" className="img-fluid" />
+              <img
+                src={
+                  selectedImage
+                    ? URL.createObjectURL(selectedImage)
+                    : "/assets/no-image.png"
+                }
+                alt=""
+                className="img-fluid"
+              />
             </div>
           </div>
         </form>
