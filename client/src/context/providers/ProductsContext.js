@@ -1,5 +1,5 @@
 import { createContext, useEffect, useReducer, useContext } from "react";
-import { getProducts, saveProduct } from "../../api/productsApi";
+import { getProducts, saveProduct, deleteProduct } from "../../api/productsApi";
 import { intialState, productsReducer } from "../reducer/productsReducer";
 import { productsActions } from "../actions/productsActions";
 
@@ -48,7 +48,7 @@ export const ProductProvider = ({ children }) => {
 
       return res.data;
     } catch (err) {
-      const errorData = err.response.data;
+      const errorData = err.response.data || err;
       if (errorData) {
         dispatch({
           type: productsActions.LOAD_SAVE_PRODUCTS_ERROR,
@@ -60,12 +60,42 @@ export const ProductProvider = ({ children }) => {
     }
   };
 
+  const removeProduct = async (id) => {
+    dispatch({ type: productsActions.DELETE_PRODUCT });
+    try {
+      await deleteProduct(id);
+      dispatch({ type: productsActions.DELETE_PRODUCT_SUCCESS, payload: id });
+      return true;
+    } catch (err) {
+      console.error(err);
+      dispatch({
+        type: productsActions.DELETE_PRODUCT_ERROR,
+        payload: err.message,
+      });
+    }
+  };
+
+  const addProductToCart = (product) => {
+    dispatch({
+      type: productsActions.ADD_PRODUCT_TO_CART,
+      payload: product,
+    });
+  };
+
   useEffect(() => {
     loadProducts();
   }, []);
 
   return (
-    <ProductContext.Provider value={{ ...state, loadProducts, addNewProduct }}>
+    <ProductContext.Provider
+      value={{
+        ...state,
+        loadProducts,
+        addNewProduct,
+        removeProduct,
+        addProductToCart,
+      }}
+    >
       {children}
     </ProductContext.Provider>
   );

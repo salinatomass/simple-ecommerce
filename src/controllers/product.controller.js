@@ -13,20 +13,25 @@ export const getProduct = (req, res) => {
 
 export const createProduct = async (req, res, next) => {
   try {
+    let imageUrl = { secure_url: "" };
     const { name, price, description, quantity } = req.body;
 
     const nameProductFound = await Product.findOne({ name });
     if (nameProductFound)
       return next(createError.Conflict("Product already exits"));
 
-    const resultImage = await uploadImage(req.files.image.tempFilePath);
+    if (req.files && req.files.image) {
+      const result = await uploadImage(req.files.image.tempFilePath);
+      imageUrl = result;
+    }
+
     const newProduct = new Product({
       name,
       price,
       description,
       quantity,
       images: {
-        url: resultImage.secure_url || "",
+        url: imageUrl.secure_url,
       },
     });
 
@@ -34,7 +39,7 @@ export const createProduct = async (req, res, next) => {
 
     res.json(newProduct);
   } catch (err) {
-    console.error(err._message);
+    console.error("ups: ", err);
     next(createError.BadRequest(err._message));
   }
 };
@@ -43,6 +48,16 @@ export const updateProduct = (req, res) => {
   res.json("updating products");
 };
 
-export const deleteProduct = (req, res) => {
-  res.json("deleting products");
+export const deleteProduct = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const productDeleted = await Product.findByIdAndDelete(id);
+    if (productDeleted) return res.sendStatus(204);
+
+    return res.sendStatus(404);
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
 };

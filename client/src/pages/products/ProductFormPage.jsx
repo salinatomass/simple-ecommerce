@@ -32,7 +32,6 @@ const ProductFormPage = ({ history }) => {
 
       const productCreated = await addNewProduct(formData);
 
-      console.log("product created: ", productCreated);
       if (!productCreated) throw new Error(errorMessage || "Upps! try again");
 
       toast.success("🚀 New product added", { position: "bottom-right" });
@@ -40,7 +39,7 @@ const ProductFormPage = ({ history }) => {
     } catch (err) {
       errorMessage
         ? toast.error(errorMessage, { position: "bottom-right" })
-        : toast.error(err, { position: "bottom-right" });
+        : toast.error(err || "", { position: "bottom-right" });
     }
   };
 

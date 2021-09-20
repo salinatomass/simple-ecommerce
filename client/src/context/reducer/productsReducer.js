@@ -4,6 +4,7 @@ export const intialState = {
   isLoading: false,
   products: [],
   errorMessage: "",
+  cart: [],
 };
 
 export const productsReducer = (state, actions) => {
@@ -44,6 +45,31 @@ export const productsReducer = (state, actions) => {
         ...state,
         isLoading: false,
         errorMessage: payload,
+      };
+
+    case productsActions.DELETE_PRODUCT:
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case productsActions.DELETE_PRODUCT_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        products: state.products.filter((product) => product._id !== payload),
+        errorMessage: "",
+      };
+    case productsActions.DELETE_PRODUCT_ERROR:
+      return {
+        ...state,
+        isLoading: false,
+        errorMessage: payload,
+      };
+
+    case productsActions.ADD_PRODUCT_TO_CART:
+      return {
+        ...state,
+        cart: [...state.cart, payload],
       };
 
     default:

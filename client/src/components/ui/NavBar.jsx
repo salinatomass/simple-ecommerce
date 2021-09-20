@@ -23,10 +23,6 @@ const NavBar = () => {
         </button>
         <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div className="navbar-nav ms-auto">
-            <Link className="nav-link active" aria-current="page" to="/cart">
-              Cart
-            </Link>
-
             {isLoggedIn ? (
               <>
                 <Link className="nav-link" to="/products/new">
@@ -41,6 +37,10 @@ const NavBar = () => {
                 Signup
               </Link>
             )}
+
+            <Link className="nav-link active" aria-current="page" to="/cart">
+              Cart
+            </Link>
           </div>
         </div>
       </div>
