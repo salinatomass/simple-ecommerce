@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { FiShoppingCart, FiTrash } from "react-icons/fi";
 import { useProducts } from "../../context/providers/ProductsContext";
 import { useAuth } from "../../context/providers/AuthContext";
@@ -9,9 +10,13 @@ const ProductCard = ({ product }) => {
 
   const { removeProduct } = useProducts();
   const { user, isLoggedIn } = useAuth();
-  const { addProductToCart } = useCart();
+  const { items, addProductToCart } = useCart();
+
+  let productFound = items.find((item) => item._id === _id) || { quantity: 0 };
+  const [quantity, setQuantity] = useState(productFound.quantity);
 
   const handleCart = (product) => {
+    setQuantity(quantity + 1);
     addProductToCart(product);
     toast.success("Product added to cart", { position: "bottom-right" });
   };
@@ -38,6 +43,7 @@ const ProductCard = ({ product }) => {
           <button
             className="btn btn-primary btn-sm rounded-0 d-flex align-items-center"
             onClick={() => handleCart(product)}
+            disabled={quantity >= product.stock}
           >
             <FiShoppingCart />
             <span className="ms-2">Add to cart</span>

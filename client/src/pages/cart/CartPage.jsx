@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useCart } from "../../context/providers/CartContext";
 import { FiTrash } from "react-icons/fi";
 import PaypalComponent from "../../components/paypal/PaypalButton";
@@ -12,8 +11,6 @@ const CartPage = () => {
     clearCart,
     decrementItem,
   } = useCart();
-
-  const [quantity, setQuantity] = useState(0);
 
   if (items.length === 0) return <h1 className="mt-5">Empty Cart</h1>;
 
@@ -52,32 +49,29 @@ const CartPage = () => {
                   <div className="d-flex justify-content-between">
                     <div>
                       <h2 className="h4">{product.name}</h2>
-                      <p>Quantity: {product.quantity}</p>
+                      <div className="mb-3">
+                        <span>Quantity: {product.quantity}</span>
+                        <button
+                          className="btn btn-secondary btn-sm mx-2"
+                          onClick={() => decrementItem(product)}
+                          disabled={product.quantity <= 1}
+                        >
+                          -
+                        </button>
+                        <button
+                          className="btn btn-primary btn-sm"
+                          onClick={() => addProductToCart(product)}
+                          disabled={product.quantity >= product.stock}
+                        >
+                          +
+                        </button>
+                      </div>
                       <p>Price: {product.price}</p>
+                      <p>Stock: {product.stock}</p>
                     </div>
                     <h3>${product.price * product.quantity}</h3>
                   </div>
-                  <div className="d-flex justify-content-between">
-                    <div>
-                      <button
-                        className="btn btn-secondary rounded-0"
-                        onClick={() => decrementItem(product, quantity)}
-                      >
-                        -
-                      </button>
-                      <input
-                        type="number"
-                        className="form-control d-inline rounded-0 w-25 mx-2"
-                        value={quantity}
-                        onChange={(e) => setQuantity(e.target.value)}
-                      />
-                      <button
-                        className="btn btn-primary rounded-0"
-                        onClick={() => addProductToCart(product, quantity)}
-                      >
-                        +
-                      </button>
-                    </div>
+                  <div className="d-flex justify-content-end">
                     <button
                       onClick={() => removeItemFromCart(product)}
                       className="btn btn-danger rounded-0 d-flex align-items-center"
