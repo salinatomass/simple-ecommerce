@@ -1,9 +1,12 @@
 import "./App.css";
 
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
+
+// Providers
 import { ProductProvider } from "./context/providers/ProductsContext";
 import { AuthProvider } from "./context/providers/AuthContext";
-import { Toaster } from "react-hot-toast";
+import { CartProvider } from "./context/providers/CartContext";
 
 // Components
 import NavBar from "./components/ui/NavBar";
@@ -19,20 +22,22 @@ function App() {
   return (
     <Router>
       <AuthProvider>
-        <NavBar />
-        <div className="App container">
-          <Switch>
-            <ProductProvider>
-              <Route path="/" exact component={HomePage} />
-              <Route path="/auth/signup" component={Signup} />
-              <Route path="/auth/signin" component={Signin} />
-              <Route path="/products/new" component={ProductFormPage} />
-              <Route path="/cart" component={CartPage} />
-            </ProductProvider>
-          </Switch>
-        </div>
-        <Toaster />
+        <CartProvider>
+          <NavBar />
+          <div className="App container">
+            <Switch>
+              <ProductProvider>
+                <Route path="/" exact component={HomePage} />
+                <Route path="/auth/signup" component={Signup} />
+                <Route path="/auth/signin" component={Signin} />
+                <Route path="/products/new" component={ProductFormPage} />
+                <Route path="/cart" component={CartPage} />
+              </ProductProvider>
+            </Switch>
+          </div>
+        </CartProvider>
       </AuthProvider>
+      <Toaster />
     </Router>
   );
 }

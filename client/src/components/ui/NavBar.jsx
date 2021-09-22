@@ -1,8 +1,11 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "../../context/providers/AuthContext";
+import { useCart } from "../../context/providers/CartContext";
+import { FiShoppingCart } from "react-icons/fi";
 
 const NavBar = () => {
-  const { isLoggedIn, logout } = useAuth();
+  const { user, isLoggedIn, logout } = useAuth();
+  const { totalItems } = useCart();
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
@@ -25,9 +28,11 @@ const NavBar = () => {
           <div className="navbar-nav ms-auto">
             {isLoggedIn ? (
               <>
-                <Link className="nav-link" to="/products/new">
-                  NewProduct
-                </Link>
+                {user.role === "admin" && (
+                  <Link className="nav-link" to="/products/new">
+                    NewProduct
+                  </Link>
+                )}
                 <Link className="nav-link" to="/" onClick={logout}>
                   Logout
                 </Link>
@@ -38,8 +43,14 @@ const NavBar = () => {
               </Link>
             )}
 
-            <Link className="nav-link active" aria-current="page" to="/cart">
-              Cart
+            <Link
+              className="nav-link active d-flex align-items-center"
+              aria-current="page"
+              to="/cart"
+            >
+              <FiShoppingCart />
+              <span className="mx-1">Cart</span>
+              <span className="badge bg-secondary ms-2">{totalItems}</span>
             </Link>
           </div>
         </div>

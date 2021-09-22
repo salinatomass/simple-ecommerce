@@ -1,13 +1,15 @@
 import { FiShoppingCart, FiTrash } from "react-icons/fi";
 import { useProducts } from "../../context/providers/ProductsContext";
 import { useAuth } from "../../context/providers/AuthContext";
+import { useCart } from "../../context/providers/CartContext";
 import { toast } from "react-hot-toast";
 
 const ProductCard = ({ product }) => {
-  const { _id, name, price, description, images } = product;
+  const { _id, name, price, description, images, stock } = product;
 
-  const { addProductToCart, removeProduct } = useProducts();
+  const { removeProduct } = useProducts();
   const { user, isLoggedIn } = useAuth();
+  const { addProductToCart } = useCart();
 
   const handleCart = (product) => {
     addProductToCart(product);
@@ -31,6 +33,7 @@ const ProductCard = ({ product }) => {
         <h2 className="h3">{name}</h2>
         <p>{description}</p>
         <p>${price}</p>
+        <p>Stock: {stock}</p>
         <div className="d-flex justify-content-between">
           <button
             className="btn btn-primary btn-sm rounded-0 d-flex align-items-center"

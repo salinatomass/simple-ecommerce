@@ -10,7 +10,7 @@ const ProductFormPage = ({ history }) => {
   const [product, setProduct] = useState({
     name: "",
     price: 0,
-    quantity: 0,
+    stock: 0,
     description: "",
   });
 
@@ -26,7 +26,7 @@ const ProductFormPage = ({ history }) => {
       const formData = new FormData();
       formData.append("name", product.name);
       formData.append("price", product.price);
-      formData.append("quantity", product.quantity);
+      formData.append("stock", product.stock);
       formData.append("description", product.description);
       formData.append("image", selectedImage);
 
@@ -78,12 +78,12 @@ const ProductFormPage = ({ history }) => {
                 onChange={handleChange}
               />
 
-              <label htmlFor="quantity">Quantity</label>
+              <label htmlFor="stock">Stock quantity</label>
               <input
                 type="text"
-                id="quantity"
+                id="stock"
                 className="form-control mb-3"
-                name="quantity"
+                name="stock"
                 onChange={handleChange}
               />
 

@@ -75,13 +75,6 @@ export const ProductProvider = ({ children }) => {
     }
   };
 
-  const addProductToCart = (product) => {
-    dispatch({
-      type: productsActions.ADD_PRODUCT_TO_CART,
-      payload: product,
-    });
-  };
-
   useEffect(() => {
     loadProducts();
   }, []);
@@ -93,7 +86,6 @@ export const ProductProvider = ({ children }) => {
         loadProducts,
         addNewProduct,
         removeProduct,
-        addProductToCart,
       }}
     >
       {children}

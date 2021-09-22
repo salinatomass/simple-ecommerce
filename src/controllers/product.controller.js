@@ -14,7 +14,7 @@ export const getProduct = (req, res) => {
 export const createProduct = async (req, res, next) => {
   try {
     let imageUrl = { secure_url: "" };
-    const { name, price, description, quantity } = req.body;
+    const { name, price, description, stock } = req.body;
 
     const nameProductFound = await Product.findOne({ name });
     if (nameProductFound)
@@ -29,7 +29,7 @@ export const createProduct = async (req, res, next) => {
       name,
       price,
       description,
-      quantity,
+      stock,
       images: {
         url: imageUrl.secure_url,
       },

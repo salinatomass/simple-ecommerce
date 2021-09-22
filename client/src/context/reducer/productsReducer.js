@@ -4,7 +4,6 @@ export const intialState = {
   isLoading: false,
   products: [],
   errorMessage: "",
-  cart: [],
 };
 
 export const productsReducer = (state, actions) => {
@@ -64,12 +63,6 @@ export const productsReducer = (state, actions) => {
         ...state,
         isLoading: false,
         errorMessage: payload,
-      };
-
-    case productsActions.ADD_PRODUCT_TO_CART:
-      return {
-        ...state,
-        cart: [...state.cart, payload],
       };
 
     default:
