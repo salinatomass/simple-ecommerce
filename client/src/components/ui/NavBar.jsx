@@ -34,7 +34,7 @@ const NavBar = () => {
             {isLoggedIn ? (
               <>
                 {user.role === "admin" && (
-                  <Link className="nav-link" to="/kproducts/new">
+                  <Link className="nav-link" to="/products/new">
                     NewProduct
                   </Link>
                 )}
