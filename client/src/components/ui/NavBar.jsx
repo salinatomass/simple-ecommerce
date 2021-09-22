@@ -5,7 +5,12 @@ import { FiShoppingCart } from "react-icons/fi";
 
 const NavBar = () => {
   const { user, isLoggedIn, logout } = useAuth();
-  const { totalItems } = useCart();
+  const { totalItems, clearCart } = useCart();
+
+  const handleLogout = () => {
+    clearCart();
+    logout();
+  };
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
@@ -29,11 +34,11 @@ const NavBar = () => {
             {isLoggedIn ? (
               <>
                 {user.role === "admin" && (
-                  <Link className="nav-link" to="/products/new">
+                  <Link className="nav-link" to="/kproducts/new">
                     NewProduct
                   </Link>
                 )}
-                <Link className="nav-link" to="/" onClick={logout}>
+                <Link className="nav-link" to="/" onClick={handleLogout}>
                   Logout
                 </Link>
               </>
