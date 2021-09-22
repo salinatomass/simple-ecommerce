@@ -33,30 +33,50 @@ const NavBar = () => {
           <div className="navbar-nav ms-auto">
             {isLoggedIn ? (
               <>
-                {user.role === "admin" && (
-                  <Link className="nav-link" to="/products/new">
-                    NewProduct
-                  </Link>
+                {user.role === "admin" ? (
+                  <>
+                    <Link className="nav-link" to="/products/new">
+                      NewProduct
+                    </Link>
+                    <Link className="nav-link" to="/" onClick={handleLogout}>
+                      Logout
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    <Link className="nav-link" to="/" onClick={handleLogout}>
+                      Logout
+                    </Link>
+                    <Link
+                      className="nav-link active d-flex align-items-center ms-2"
+                      aria-current="page"
+                      to={isLoggedIn ? "/cart" : "/auth/signin"}
+                    >
+                      <FiShoppingCart />
+                      <span className="mx-1">Cart</span>
+                      <span className="badge bg-secondary ms-2">
+                        {totalItems}
+                      </span>
+                    </Link>
+                  </>
                 )}
-                <Link className="nav-link" to="/" onClick={handleLogout}>
-                  Logout
-                </Link>
               </>
             ) : (
-              <Link className="nav-link" to="/auth/signup">
-                Signup
-              </Link>
+              <>
+                <Link className="nav-link" to="/auth/signin">
+                  Login
+                </Link>
+                <Link
+                  className="nav-link active d-flex align-items-center ms-2"
+                  aria-current="page"
+                  to={isLoggedIn ? "/cart" : "/auth/signin"}
+                >
+                  <FiShoppingCart />
+                  <span className="mx-1">Cart</span>
+                  <span className="badge bg-secondary ms-2">{totalItems}</span>
+                </Link>
+              </>
             )}
-
-            <Link
-              className="nav-link active d-flex align-items-center ms-2"
-              aria-current="page"
-              to={isLoggedIn ? "/cart" : "/auth/signup"}
-            >
-              <FiShoppingCart />
-              <span className="mx-1">Cart</span>
-              <span className="badge bg-secondary ms-2">{totalItems}</span>
-            </Link>
           </div>
         </div>
       </div>

@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { FiShoppingCart, FiTrash } from "react-icons/fi";
+import { FiShoppingCart, FiTrash, FiEdit } from "react-icons/fi";
 import { useProducts } from "../../context/providers/ProductsContext";
 import { useAuth } from "../../context/providers/AuthContext";
 import { useCart } from "../../context/providers/CartContext";
 import { toast } from "react-hot-toast";
+import { Link } from "react-router-dom";
 
 const ProductCard = ({ product }) => {
   const { _id, name, price, description, images, stock } = product;
@@ -28,9 +29,9 @@ const ProductCard = ({ product }) => {
   };
 
   return (
-    <div className="card rounded-0 h-100">
+    <div id="productCard" className="card rounded-0 h-100">
       <figure
-        className="m-auto d-flex justify-content-center"
+        className="m-auto d-flex justify-content-center mt-3"
         style={{ height: "250px" }}
       >
         <img
@@ -48,22 +49,32 @@ const ProductCard = ({ product }) => {
         <div className="border-top pt-4">
           <p>${price}</p>
           <p>Stock: {stock}</p>
-          <div className="d-flex justify-content-between">
-            <button
-              className="btn btn-primary btn-sm rounded-0 d-flex align-items-center"
-              onClick={() => handleCart(product)}
-              disabled={quantity >= product.stock}
-            >
-              <FiShoppingCart />
-              <span className="ms-2">Add to cart</span>
-            </button>
-            {isLoggedIn && user.role === "admin" && (
+          <div className="d-flex">
+            {isLoggedIn && user.role === "admin" ? (
+              <>
+                <Link
+                  className="btn btn-primary btn-sm rounded-0 d-flex align-items-center me-3"
+                  to={`/products/edit/${_id}`}
+                >
+                  <FiEdit />
+                  <span className="ms-2">Edit</span>
+                </Link>
+                <button
+                  className="btn btn-secondary btn-sm rounded-0 d-flex align-items-center"
+                  onClick={() => handleDelete(_id)}
+                >
+                  <FiTrash />
+                  <span className="ms-2">Delete</span>
+                </button>
+              </>
+            ) : (
               <button
-                className="btn btn-secondary btn-sm rounded-0 d-flex align-items-center"
-                onClick={() => handleDelete(_id)}
+                className="btn btn-primary btn-sm rounded-0 d-flex align-items-center"
+                onClick={() => handleCart(product)}
+                disabled={quantity >= product.stock}
               >
-                <FiTrash />
-                <span className="ms-2">Delete</span>
+                <FiShoppingCart />
+                <span className="ms-2">Add to cart</span>
               </button>
             )}
           </div>
