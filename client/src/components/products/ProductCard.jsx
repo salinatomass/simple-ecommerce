@@ -28,35 +28,45 @@ const ProductCard = ({ product }) => {
   };
 
   return (
-    <div className="card rounded-0">
-      <img
-        src={images && images.url ? images.url : "/assets/no-product.png"}
-        alt=""
-        className="w-75 m-auto"
-      />
-      <div className="card-body">
-        <h2 className="h3">{name}</h2>
-        <p>{description}</p>
-        <p>${price}</p>
-        <p>Stock: {stock}</p>
-        <div className="d-flex justify-content-between">
-          <button
-            className="btn btn-primary btn-sm rounded-0 d-flex align-items-center"
-            onClick={() => handleCart(product)}
-            disabled={quantity >= product.stock}
-          >
-            <FiShoppingCart />
-            <span className="ms-2">Add to cart</span>
-          </button>
-          {isLoggedIn && user.role === "admin" && (
+    <div className="card rounded-0 h-100">
+      <figure
+        className="m-auto d-flex justify-content-center"
+        style={{ height: "250px" }}
+      >
+        <img
+          src={images && images.url ? images.url : "/assets/no-product.png"}
+          alt=""
+          className="m-auto"
+          style={{ maxWidth: "90%", maxHeight: "100%" }}
+        />
+      </figure>
+      <div className="card-body pb-4 d-flex flex-column justify-content-between">
+        <div>
+          <h2 className="h3">{name}</h2>
+          <p>{description}</p>
+        </div>
+        <div className="border-top pt-4">
+          <p>${price}</p>
+          <p>Stock: {stock}</p>
+          <div className="d-flex justify-content-between">
             <button
-              className="btn btn-secondary btn-sm rounded-0 d-flex align-items-center"
-              onClick={() => handleDelete(_id)}
+              className="btn btn-primary btn-sm rounded-0 d-flex align-items-center"
+              onClick={() => handleCart(product)}
+              disabled={quantity >= product.stock}
             >
-              <FiTrash />
-              <span className="ms-2">Delete</span>
+              <FiShoppingCart />
+              <span className="ms-2">Add to cart</span>
             </button>
-          )}
+            {isLoggedIn && user.role === "admin" && (
+              <button
+                className="btn btn-secondary btn-sm rounded-0 d-flex align-items-center"
+                onClick={() => handleDelete(_id)}
+              >
+                <FiTrash />
+                <span className="ms-2">Delete</span>
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </div>

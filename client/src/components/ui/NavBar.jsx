@@ -49,9 +49,9 @@ const NavBar = () => {
             )}
 
             <Link
-              className="nav-link active d-flex align-items-center"
+              className="nav-link active d-flex align-items-center ms-2"
               aria-current="page"
-              to="/cart"
+              to={isLoggedIn ? "/cart" : "/auth/signup"}
             >
               <FiShoppingCart />
               <span className="mx-1">Cart</span>

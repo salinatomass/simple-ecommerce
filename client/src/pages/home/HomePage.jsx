@@ -19,7 +19,7 @@ const HomePage = () => {
     <div className="row">
       <Hero />
       {products.map((product) => (
-        <div className="col-md-3 p-2" key={product._id}>
+        <div className="col-md-3 p-2 pb-5" key={product._id}>
           <ProductCard product={product} />
         </div>
       ))}
