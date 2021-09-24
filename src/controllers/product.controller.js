@@ -3,12 +3,28 @@ import createError from "http-errors";
 import { uploadImage } from "../helpers/cloudinary";
 
 export const getProducts = async (req, res) => {
-  const product = await Product.find();
-  res.json(product);
+  try {
+    const products = await Product.find();
+    res.json(products);
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
 };
 
-export const getProduct = (req, res) => {
-  res.json("get product");
+export const getProduct = async (req, res, next) => {
+  const { id } = req.params;
+
+  try {
+    const product = await Product.findById(id);
+
+    if (product) return res.json(product);
+
+    return res.sendStatus(404);
+  } catch (err) {
+    console.error(err.status);
+    next(err);
+  }
 };
 
 export const createProduct = async (req, res, next) => {
@@ -39,13 +55,32 @@ export const createProduct = async (req, res, next) => {
 
     res.json(newProduct);
   } catch (err) {
-    console.error("ups: ", err);
+    console.error(err);
     next(createError.BadRequest(err._message));
   }
 };
 
-export const updateProduct = (req, res) => {
-  res.json("updating products");
+export const updateProduct = async (req, res, next) => {
+  const { id } = req.params;
+  const changes = req.body;
+
+  try {
+    let update = changes;
+
+    if (req.files && req.files.image) {
+      const result = await uploadImage(req.files.image.tempFilePath);
+      update = { ...update, images: { url: result.secure_url } };
+    }
+
+    const productUpdated = await Product.findByIdAndUpdate(id, update);
+
+    if (productUpdated) return res.sendStatus(201);
+
+    return res.sendStatus(404);
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
 };
 
 export const deleteProduct = async (req, res) => {

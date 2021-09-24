@@ -3,6 +3,13 @@ import { productsActions } from "../actions/productsActions";
 export const intialState = {
   isLoading: false,
   products: [],
+  edit: {
+    name: "",
+    price: 0,
+    stock: 1,
+    description: "",
+    images: { url: "/assets/no-image.png" },
+  },
   errorMessage: "",
 };
 
@@ -22,6 +29,25 @@ export const productsReducer = (state, actions) => {
         products: payload,
       };
     case productsActions.LOAD_PRODUCTS_ERROR:
+      return {
+        ...state,
+        isLoading: false,
+        errorMessage: payload,
+      };
+
+    case productsActions.GET_PRODUCT:
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case productsActions.GET_PRODUCT_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        edit: payload,
+        errorMessage: "",
+      };
+    case productsActions.GET_PRODUCT_ERROR:
       return {
         ...state,
         isLoading: false,
@@ -59,6 +85,30 @@ export const productsReducer = (state, actions) => {
         errorMessage: "",
       };
     case productsActions.DELETE_PRODUCT_ERROR:
+      return {
+        ...state,
+        isLoading: false,
+        errorMessage: payload,
+      };
+
+    case productsActions.UPDATE_PRODUCT:
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case productsActions.UPDATE_PRODUCT_SUCCESS: {
+      const updatedProducts = state.products.map((item) =>
+        item._id === payload.id ? { ...item, ...payload.product } : { ...item }
+      );
+
+      return {
+        ...state,
+        isLoading: false,
+        errorMessage: "",
+        products: updatedProducts,
+      };
+    }
+    case productsActions.UPDATE_PRODUCT_ERROR:
       return {
         ...state,
         isLoading: false,

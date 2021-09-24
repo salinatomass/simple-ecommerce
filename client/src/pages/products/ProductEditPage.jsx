@@ -1,23 +1,36 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router";
 import { useProducts } from "../../context/providers/ProductsContext";
 
 import Spinner from "../../components/ui/Spinner";
 import toast from "react-hot-toast";
 
-const ProductFormPage = ({ history }) => {
-  const { addNewProduct, isLoading, errorMessage } = useProducts();
+const ProductEditPage = ({ history }) => {
+  const { edit, loadProduct, changeProduct, isLoading, errorMessage } =
+    useProducts();
+  const { id } = useParams();
 
-  const [product, setProduct] = useState({
-    name: "",
-    price: 0,
-    stock: 1,
-    description: "",
-  });
-
+  const [product, setProduct] = useState(edit);
   const [selectedImage, setSelectedImage] = useState(null);
 
-  const handleChange = (e) =>
-    setProduct({ ...product, [e.target.name]: e.target.value });
+  useEffect(() => {
+    const findProduct = async () => {
+      const productFound = await loadProduct(id);
+      if (!productFound) {
+        history.push("/not-found");
+      }
+    };
+    findProduct();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  useEffect(() => setProduct(edit), [edit]);
+
+  const handleChange = (e) => {
+    setProduct({
+      ...product,
+      [e.target.name]: parseInt(e.target.value) || e.target.value,
+    });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -30,16 +43,14 @@ const ProductFormPage = ({ history }) => {
       formData.append("description", product.description);
       formData.append("image", selectedImage);
 
-      const productCreated = await addNewProduct(formData);
+      const productUpdated = await changeProduct(id, formData);
 
-      if (!productCreated) throw new Error(errorMessage || "Upps! try again");
+      if (!productUpdated) throw new Error(errorMessage || "Upps! try again");
 
-      toast.success("🚀 New product added", { position: "bottom-right" });
+      toast.success("Product update successfuly", { position: "bottom-right" });
       history.push("/");
     } catch (err) {
-      errorMessage
-        ? toast.error(errorMessage, { position: "bottom-right" })
-        : toast.error(err || "", { position: "bottom-right" });
+      console.error(err);
     }
   };
 
@@ -49,13 +60,13 @@ const ProductFormPage = ({ history }) => {
         <form className="card card-body" onSubmit={handleSubmit}>
           <div className="row">
             <div className="d-flex justify-content-between align-items-center">
-              <h1>Save product</h1>
+              <h1>Edit product</h1>
               <button
                 type="submit"
                 className="btn btn-primary"
-                disabled={!product.name || isLoading}
+                disabled={product === edit}
               >
-                {isLoading ? <Spinner /> : "Save"}
+                {isLoading ? <Spinner /> : "Edit"}
               </button>
             </div>
             <div className="col-md-7">
@@ -65,16 +76,15 @@ const ProductFormPage = ({ history }) => {
                 id="name"
                 className="form-control mb-3 mt-2"
                 name="name"
-                placeholder="Product 1"
+                value={product.name}
                 onChange={handleChange}
-                autoFocus
               />
               <label htmlFor="price">Price (USD)</label>
               <input
                 type="number"
                 id="price"
                 className="form-control mb-3 mt-2"
-                placeholder="$0"
+                value={product.price}
                 name="price"
                 onChange={handleChange}
               />
@@ -84,7 +94,7 @@ const ProductFormPage = ({ history }) => {
                 type="number"
                 id="stock"
                 className="form-control mb-3 mt-2"
-                placeholder="1"
+                value={product.stock}
                 name="stock"
                 onChange={handleChange}
               />
@@ -95,7 +105,7 @@ const ProductFormPage = ({ history }) => {
                 rows="2"
                 id="description"
                 className="form-control mt-2"
-                placeholder="Some short desciption"
+                value={product.description}
                 onChange={handleChange}
               ></textarea>
               <label htmlFor="image"></label>
@@ -112,7 +122,7 @@ const ProductFormPage = ({ history }) => {
                 src={
                   selectedImage
                     ? URL.createObjectURL(selectedImage)
-                    : "/assets/no-image.png"
+                    : product.images.url
                 }
                 alt=""
                 className="img-fluid"
@@ -125,4 +135,4 @@ const ProductFormPage = ({ history }) => {
   );
 };
 
-export default ProductFormPage;
+export default ProductEditPage;

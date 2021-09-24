@@ -14,9 +14,11 @@ import NavBar from "./components/ui/NavBar";
 // Pages
 import HomePage from "./pages/home/HomePage.jsx";
 import ProductFormPage from "./pages/products/ProductFormPage";
+import ProductEditPage from "./pages/products/ProductEditPage";
 import CartPage from "./pages/cart/CartPage";
 import Signup from "./pages/auth/Signup";
 import Signin from "./pages/auth/Signin";
+import NotFoundPage from "./pages/notFound/notFoundPage";
 
 function App() {
   return (
@@ -31,7 +33,9 @@ function App() {
                 <Route path="/auth/signup" component={Signup} />
                 <Route path="/auth/signin" component={Signin} />
                 <Route path="/products/new" component={ProductFormPage} />
+                <Route path="/products/edit/:id" component={ProductEditPage} />
                 <Route path="/cart" component={CartPage} />
+                <Route path="/not-found" component={NotFoundPage} />
               </ProductProvider>
             </Switch>
           </div>

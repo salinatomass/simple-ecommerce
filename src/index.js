@@ -25,7 +25,10 @@ app.use(
 app.use(productRoutes);
 app.use(authRoutes);
 app.use((err, req, res, next) => {
-  const error = { status: err.status || 500, message: err.message };
+  const error = {
+    status: err.status || 500,
+    message: err.message || "Server error",
+  };
   res.status(error.status).json(error);
 });
 

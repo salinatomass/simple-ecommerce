@@ -10,16 +10,18 @@ axiosInstance.interceptors.request.use((config) => {
 
 export const getProducts = async () => await axios.get(`${API}/products`);
 
-export const saveProduct = async (newProduct) => {
-  return await axiosInstance.post(`/products`, newProduct, {
+export const getProduct = async (id) =>
+  await axios.get(`${API}/products/${id}`);
+
+export const saveProduct = async (newProduct) =>
+  await axiosInstance.post(`/products`, newProduct, {
     headers: { "Content-Type": "multipart/form-data" },
   });
-};
 
-export const deleteProduct = async (id) => {
-  return await axiosInstance.delete(`/products/${id}`);
-};
+export const deleteProduct = async (id) =>
+  await axiosInstance.delete(`/products/${id}`);
 
-export const updateProduct = async (id, product) => {
-  return await axiosInstance.put(`/products/${id}`, product);
-};
+export const updateProduct = async (id, product) =>
+  await axiosInstance.put(`/products/${id}`, product, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
