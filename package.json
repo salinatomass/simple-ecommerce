@@ -4,8 +4,9 @@
   "description": "A simple ecommerce website",
   "main": "index.js",
   "scripts": {
-    "start": "babel-node src/index.js --ignore client",
-    "dev": "nodemon src/index.js --exec babel-node --ignore client"
+    "start": "node dist/index.js",
+    "dev": "webpack --mode development && node dist/index.js",
+    "build": "webpack --mode production"
   },
   "keywords": [],
   "author": "Tomás Salina",
@@ -25,9 +26,13 @@
   },
   "devDependencies": {
     "@babel/cli": "^7.15.4",
-    "@babel/core": "^7.15.5",
+    "@babel/core": "^7.15.8",
     "@babel/node": "^7.15.4",
-    "@babel/preset-env": "^7.15.4",
-    "nodemon": "^2.0.12"
+    "@babel/plugin-transform-runtime": "^7.15.8",
+    "@babel/preset-env": "^7.15.8",
+    "babel-loader": "^8.2.3",
+    "nodemon": "^2.0.12",
+    "webpack": "^5.59.1",
+    "webpack-cli": "^4.9.1"
   }
 }
